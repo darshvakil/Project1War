@@ -149,3 +149,62 @@ class WarGame extends Game {
         // Declare the winner
         declareWinner();
     }
+private void createDeck() {
+        String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
+        String[] ranks = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
+
+        for (String suit : suits) {
+            for (String rank : ranks) {
+                Card card = new Card(rank, suit);
+                deck.addCard(card);
+            }
+        }
+    }
+
+    private void dealCards() {
+        ArrayList<Player> players = getPlayers();
+        int numPlayers = players.size();
+        int numCards = deck.getSize();
+
+        for (int i = 0; i < numCards; i++) {
+            Player currentPlayer = players.get(i % numPlayers);
+            Card card = deck.drawCard();
+            currentPlayer.addCardToHand(card);
+        }
+    }
+
+    private void playRound() {
+        ArrayList<Player> players = getPlayers();
+        ArrayList<Card> cardsInPlay = new ArrayList<>();
+
+        for (Player player : players) {
+            if (player.hasCards()) {
+                Card playedCard = player.playCard();
+                cardsInPlay.add(playedCard);
+                System.out.println(player.getName() + " plays: " + playedCard.toString());
+            }
+        }
+
+        Card highestCard = getHighestCard(cardsInPlay);
+        System.out.println("The highest card is: " + highestCard.toString());
+
+        for (Player player : players) {
+            if (player.hasCards()) {
+                if (player.playCard() != highestCard) {
+                    System.out.println(player.getName() + " loses a card");
+                }
+            }
+        }
+    }
+
+    private Card getHighestCard(ArrayList<Card> cards) {
+        Card highestCard = cards.get(0);
+
+        for (Card card : cards) {
+            if (getCardValue(card) > getCardValue(highestCard)) {
+                highestCard = card;
+            }
+        }
+
+        return highestCard;
+    }
