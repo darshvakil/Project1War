@@ -208,3 +208,53 @@ private void createDeck() {
 
         return highestCard;
     }
+    
+    private int getCardValue(Card card) {
+        String rank = card.toString().split(" ")[0];
+
+        if (rank.equals("Ace")) {
+            return 14;
+        } else if (rank.equals("King")) {
+            return 13;
+        } else if (rank.equals("Queen")) {
+            return 12;
+        } else if (rank.equals("Jack")) {
+            return 11;
+        } else {
+            return Integer.parseInt(rank);
+        }
+    }
+
+    private boolean atLeastTwoPlayersHaveCards() {
+        int playersWithCards = 0;
+        for (Player player : getPlayers()) {
+            if (player.hasCards()) {
+                playersWithCards++;
+            }
+        }
+        return playersWithCards >= 2;
+    }
+
+    @Override
+    public void declareWinner() {
+        Player winner = null;
+        for (Player player : getPlayers()) {
+            if (player.hasCards()) {
+                if (winner == null) {
+                    winner = player;
+                } else {
+                    System.out.println("It's a tie!");
+                    return;
+                }
+            }
+        }
+        System.out.println("The winner is: " + winner.getName());
+    }
+
+    public void addPlayer(String name) {
+        Player player = new Player(name);
+        getPlayers().add(player);
+    }
+}
+
+}
