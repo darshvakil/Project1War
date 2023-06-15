@@ -33,7 +33,7 @@ class GroupOfCards {
     }
 
     public void shuffle() {
-        Collections.shuffle(cards);
+    //implementation to shuffle all cards 
     }
 
     public Card drawCard() {
@@ -61,15 +61,15 @@ class Player {
     }
 
     public void addCardToHand(Card card) {
-        hand.addCard(card);
+       //implementation to add card to hand for the player who wins the round
     }
 
     public Card playCard() {
-        return hand.drawCard();
+    //implentation for each player to play a card 
     }
 
     public boolean hasCards() {
-        return hand.getSize() > 0;
+    //number of cards player will have to decide winner at the end
     }
 
     public String getName() {
@@ -110,15 +110,11 @@ abstract class Game {
         this.players = players;
     }
 
-    /**
-     * Play the game. This might be one method or many method calls depending on your game.
-     */
-    public abstract void play();
-
-    /**
-     * When the game is over, use this method to declare and display a winning player.
-     */
+    
+    public abstract void play(); 
+    
     public abstract void declareWinner();
+
 }
 
 /**
@@ -149,7 +145,7 @@ class WarGame extends Game {
         // Declare the winner
         declareWinner();
     }
-private void createDeck() {
+private void createDeck() { //creates a basic deck 
         String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
         String[] ranks = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
 
@@ -162,81 +158,26 @@ private void createDeck() {
     }
 
     private void dealCards() {
-        ArrayList<Player> players = getPlayers();
-        int numPlayers = players.size();
-        int numCards = deck.getSize();
-
-        for (int i = 0; i < numCards; i++) {
-            Player currentPlayer = players.get(i % numPlayers);
-            Card card = deck.drawCard();
-            currentPlayer.addCardToHand(card);
-        }
+    //implementation to deal Cards to players
     }
 
     private void playRound() {
-        ArrayList<Player> players = getPlayers();
-        ArrayList<Card> cardsInPlay = new ArrayList<>();
-
-        for (Player player : players) {
-            if (player.hasCards()) {
-                Card playedCard = player.playCard();
-                cardsInPlay.add(playedCard);
-                System.out.println(player.getName() + " plays: " + playedCard.toString());
-            }
-        }
-
-        Card highestCard = getHighestCard(cardsInPlay);
-        System.out.println("The highest card is: " + highestCard.toString());
-
-        for (Player player : players) {
-            if (player.hasCards()) {
-                if (player.playCard() != highestCard) {
-                    System.out.println(player.getName() + " loses a card");
-                }
-            }
-        }
+       //implementation to run a single round / turn andd determine who has higher card
     }
 
-    private Card getHighestCard(ArrayList<Card> cards) {
-        Card highestCard = cards.get(0);
-
-        for (Card card : cards) {
-            if (getCardValue(card) > getCardValue(highestCard)) {
-                highestCard = card;
-            }
-        }
-
-        return highestCard;
+    private Card getHighestCard(ArrayList<Card> cards) { //implentation to determine the highest value card from both cards drawn by players
     }
     
     private int getCardValue(Card card) {
-        String rank = card.toString().split(" ")[0];
-
-        if (rank.equals("Ace")) {
-            return 14;
-        } else if (rank.equals("King")) {
-            return 13;
-        } else if (rank.equals("Queen")) {
-            return 12;
-        } else if (rank.equals("Jack")) {
-            return 11;
-        } else {
-            return Integer.parseInt(rank);
-        }
+    //implementation to set values for card
     }
 
-    private boolean atLeastTwoPlayersHaveCards() {
-        int playersWithCards = 0;
-        for (Player player : getPlayers()) {
-            if (player.hasCards()) {
-                playersWithCards++;
-            }
-        }
-        return playersWithCards >= 2;
-    }
+    private boolean atLeastTwoPlayersHaveCards(); {} //oversees who is still in the game
+    
 
     @Override
-    public void declareWinner() {
+//base implementation on how winner will be decided. may change accordingly 
+    public void declareWinner() { 
         Player winner = null;
         for (Player player : getPlayers()) {
             if (player.hasCards()) {
@@ -251,7 +192,7 @@ private void createDeck() {
         System.out.println("The winner is: " + winner.getName());
     }
 
-    public void addPlayer(String name) {
+    public void addPlayer(String name) { //add player to game 
         Player player = new Player(name);
         getPlayers().add(player);
     }
